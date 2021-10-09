@@ -13,7 +13,10 @@
     <!--Login-->
     <string name="msg_email">Please enter a email</string>
     <string name="msg_password">Please enter a password</string>
+    <string name="msg_password2">The password must be at least 6 characters long</string>
     <string name="sure">Are you sure you want to leave</string>
+    <string name="msg_exist">This user is already registered</string>
+    <string name="msg_error">This user could not be registered</string>
     <!--Menu-->
     <string name="menu_home">Home</string>
     <string name="menu_user">Users</string>
@@ -22,8 +25,35 @@
     <string name="hello">Hello</string>
     <string name="logOut">Log Out</string>
     <string name="name">Name</string>
+    <!--add user-->
+    <string name="lastName">Last name</string>
+    <string name="faculty">Faculty</string>
+    <string name="site">Site</string>
+    <string name="program">Program</string>
+    <string name="role">Role</string>
+    <string name="btn_add">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_edit">Edit</string>
+    <!--message-->
+    <string name="msg_nameUser">Please enter a name</string>
+    <string name="msg_lastNameUser">Please enter a last name</string>
+    <string name="msg_facultyUser">Please enter a faculty</string>
+    <string name="msg_programUser">Please enter a program</string>
+    <string name="msg_emailUser">Please enter a email</string>
+    <string name="msg_passwordUser">Please enter a password</string>
+    <string name="msg_selectRole">Please select a role</string>
+    <string name="msg_selectSite">Please select a site</string>
+    <string name="msg_selectStatus">Please select a status</string>
+    <string name="msg_successUser">The user was created</string>
+    <string name="msg_successUser2">The user was edited</string>
+    <string name="msg_disabled">The user account has been disabled by an administrator</string>
+    <string name="msg_info">Success</string>
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
+    <string name="status">Status</string>
 </resources>

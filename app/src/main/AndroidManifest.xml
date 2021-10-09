@@ -17,6 +17,12 @@
         android:theme="@style/Theme.ProyectoUAO"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".EditUser"
+            android:exported="true" />
+        <activity
+            android:name=".AddUser"
+            android:exported="true" />
+        <activity
             android:name=".DashBoard"
             android:exported="true" />
         <activity

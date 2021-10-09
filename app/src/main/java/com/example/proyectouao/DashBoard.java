@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -32,7 +33,8 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
     private Toolbar toolbar;
     private Activity mySelf;
     private ActionBarDrawerToggle toggle;
-    private String user, rol;
+    private String user;
+    private String role;
     private FirebaseFirestore db;
 
     @Override
@@ -54,9 +56,17 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()){
-                    user = (String) documentSnapshot.getData().get("name");
-                    rol= (String) documentSnapshot.getData().get("rol");
+                    user = (String) documentSnapshot.getData().get("nameUser");
+                    role = (String) documentSnapshot.getData().get("selectRole");
                     textView.setText(user);
+                    if( Integer.parseInt(role) != 0){
+                        MenuItem item_side = navigationView.getMenu().findItem(R.id.nav_side);
+                        item_side.setVisible(false);
+                        MenuItem item_user = navigationView.getMenu().findItem(R.id.nav_user);
+                        item_user.setVisible(false);
+                        MenuItem item_offer = navigationView.getMenu().findItem(R.id.nav_offer);
+                        item_offer.setVisible(false);
+                    }
                 }
             }
         });

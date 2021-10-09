@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22864583333333333" />
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/drawable/side_nav_bar.xml" value="0.2361111111111111" />
+        <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/activity_add_user.xml" value="0.33" />
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/activity_dash_board.xml" value="0.1" />
+        <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/activity_edit_user.xml" value="0.33" />
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/activity_main.xml" value="0.18059777102330293" />
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/activity_menu.xml" value="0.13903985507246377" />
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/app_bar_menu.xml" value="0.1529888551165147" />
@@ -14,6 +17,7 @@
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/fragment_user.xml" value="0.15374873353596757" />
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/nav_header_menu.xml" value="0.18059777102330293" />
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/progress_bar.xml" value="0.18059777102330293" />
+        <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/layout/row_item.xml" value="0.25" />
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/menu/activity_menu_drawer.xml" value="0.36564102564102563" />
         <entry key="..\:/ANDROID/UAO/proyectoUAO/app/src/main/res/menu/menu.xml" value="0.28425925925925927" />
       </map>
