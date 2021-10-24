@@ -10,6 +10,8 @@
     <string name="action_settings">Settings</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="titleMap">To start</string>
+    <string name="msg_starting">to enter a new restaurant you must first select the location, then enter a name and description to save it.</string>
     <!--Login-->
     <string name="msg_email">Please enter a email</string>
     <string name="msg_password">Please enter a password</string>
@@ -25,6 +27,8 @@
     <string name="hello">Hello</string>
     <string name="logOut">Log Out</string>
     <string name="name">Name</string>
+    <string name="nameSide">Name of side</string>
+    <string name="description">Description</string>
     <!--add user-->
     <string name="lastName">Last name</string>
     <string name="faculty">Faculty</string>
@@ -46,14 +50,15 @@
     <string name="msg_selectStatus">Please select a status</string>
     <string name="msg_successUser">The user was created</string>
     <string name="msg_successUser2">The user was edited</string>
+    <string name="msg_successSide">The side was create</string>
+    <string name="msg_successSide2">The side was edited</string>
     <string name="msg_disabled">The user account has been disabled by an administrator</string>
     <string name="msg_info">Success</string>
-
-
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
     <string name="status">Status</string>
+    <string name="mapbox_access_token">pk.eyJ1Ijoiam9zaGVhbnQiLCJhIjoiY2t2NDhnNzd3MHkxYjJvbDB0dmlvdmsxbyJ9.iJzPyuT3GYUg5cdORlczJA</string>
 </resources>
