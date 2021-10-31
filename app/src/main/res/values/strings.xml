@@ -29,6 +29,14 @@
     <string name="name">Name</string>
     <string name="nameSide">Name of side</string>
     <string name="description">Description</string>
+    <string name="nameRestaurant">Name of place</string>
+    <string name="comboTitle">Combo name</string>
+    <string name="comboDescription">Combo description</string>
+    <string name="amount">Amount</string>
+    <string name="startDate">Start date</string>
+    <string name="startTime">Start time</string>
+    <string name="endDate">End date</string>
+    <string name="endTime">End time</string>
     <!--add user-->
     <string name="lastName">Last name</string>
     <string name="faculty">Faculty</string>

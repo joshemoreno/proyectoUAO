@@ -115,6 +115,9 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
             case R.id.nav_side:
                 ft.replace(R.id.content, new SideFragment()).commit();
                 break;
+            case R.id.nav_offer:
+                ft.replace(R.id.content, new OfferFragment()).commit();
+                break;
             case R.id.nav_logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(mySelf);
                 builder.setTitle(R.string.logOut);

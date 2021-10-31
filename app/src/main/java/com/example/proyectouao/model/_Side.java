@@ -4,12 +4,14 @@ import java.util.Objects;
 
 public class _Side {
 
+    private String id;
     private String nameSide;
     private String latitude;
     private String longitude;
     private String description;
 
-    public _Side(String nameSide, String latitude, String longitude, String description) {
+    public _Side(String id, String nameSide, String latitude, String longitude, String description) {
+        this.id = id;
         this.nameSide = nameSide;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -17,6 +19,14 @@ public class _Side {
     }
 
     public _Side() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNameSide() {
@@ -56,11 +66,11 @@ public class _Side {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         _Side side = (_Side) o;
-        return Objects.equals(nameSide, side.nameSide) && Objects.equals(latitude, side.latitude) && Objects.equals(longitude, side.longitude) && Objects.equals(description, side.description);
+        return Objects.equals(id, side.id) && Objects.equals(nameSide, side.nameSide) && Objects.equals(latitude, side.latitude) && Objects.equals(longitude, side.longitude) && Objects.equals(description, side.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameSide, latitude, longitude, description);
+        return Objects.hash(id, nameSide, latitude, longitude, description);
     }
 }
