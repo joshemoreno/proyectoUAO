@@ -20,9 +20,15 @@
         android:theme="@style/Theme.ProyectoUAO"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".AddOffer"
-            android:windowSoftInputMode="adjustResize"
+            android:name=".OfferDetail"
             android:exported="true" />
+        <activity
+            android:name=".EditOffer"
+            android:exported="true" />
+        <activity
+            android:name=".AddOffer"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MapActivity"
             android:exported="true">

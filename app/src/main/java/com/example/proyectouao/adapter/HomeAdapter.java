@@ -19,13 +19,14 @@ import org.jetbrains.annotations.NotNull;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> implements  View.OnClickListener{
-    ArrayList<_Offer> offers;
-    Context context;
-    private View.OnClickListener listener;
-    DecimalFormat formater = new DecimalFormat("###,###.##");
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> implements  View.OnClickListener{
 
-    public OfferAdapter(ArrayList<_Offer> offers, Context context){
+        ArrayList<_Offer> offers;
+        Context context;
+        private View.OnClickListener listener;
+        DecimalFormat formater = new DecimalFormat("###,###.##");
+
+    public HomeAdapter(ArrayList<_Offer> offers, Context context){
         this.offers = offers;
         this.context = context;
     }
@@ -33,14 +34,14 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
     @NonNull
     @NotNull
     @Override
-    public OfferAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public HomeAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item, parent, false);
         v.setOnClickListener(this);
-        return new OfferAdapter.ViewHolder(v);
+        return new HomeAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OfferAdapter.ViewHolder holder, int position){
+    public void onBindViewHolder(@NonNull HomeAdapter.ViewHolder holder, int position){
         holder.nameOffer.setText(offers.get(position).getComboTitle());
         holder.descOffer.setText(offers.get(position).getComboDescription());
         holder.image.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;

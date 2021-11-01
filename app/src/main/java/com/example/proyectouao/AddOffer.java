@@ -40,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.lang.reflect.Array;
+import java.sql.Timestamp;
 import java.text.BreakIterator;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -260,7 +261,11 @@ public class AddOffer extends AppCompatActivity {
                         Date start_Date = dateParser.parse(start_date_time);
                         Date end_Date = dateParser.parse(end_date_time);
 
-                        Date currentDate = new Date();
+
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(Calendar.HOUR, cal.get(Calendar.HOUR)- 5);
+                        Date currentDate = cal.getTime();
+
                         String status = "0";
 
                         if(currentDate.after(start_Date)&&currentDate.before(end_Date)){
@@ -350,6 +355,7 @@ public class AddOffer extends AppCompatActivity {
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR)- 5);
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -372,6 +378,7 @@ public class AddOffer extends AppCompatActivity {
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR)- 5);
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -394,6 +401,7 @@ public class AddOffer extends AppCompatActivity {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR)- 5);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         return new TimePickerDialog(getActivity(), this , hour, minute, true);
@@ -403,6 +411,7 @@ public class AddOffer extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY,hour);
             calendar.set(Calendar.MINUTE,minute);
+            calendar.set(Calendar.SECOND, 00);
             String startTime = DateFormat.getTimeInstance().format(calendar.getTime());
             et_startTime.setText(startTime);
         }
@@ -413,6 +422,7 @@ public class AddOffer extends AppCompatActivity {
         @Override
         public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
             final Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR)- 5);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
             return new TimePickerDialog(getActivity(), this , hour, minute, true);
@@ -422,6 +432,7 @@ public class AddOffer extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY,hour);
             calendar.set(Calendar.MINUTE,minute);
+            calendar.set(Calendar.SECOND, 00);
             String endTime = DateFormat.getTimeInstance().format(calendar.getTime());
             et_endTime.setText(endTime);
         }

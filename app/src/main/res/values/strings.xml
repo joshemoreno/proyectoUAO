@@ -76,6 +76,8 @@
     <string name="msg_startTime">Please enter a start time</string>
     <string name="msg_endTime">Please enter a end time</string>
     <string name="msg_imageProduct">Please enter a image</string>
+    <string name="msg_diffDate">The end date must be greater than the start date</string>
+    <string name="txt_unites">units</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
