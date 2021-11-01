@@ -18,6 +18,11 @@ public class _Side {
         this.description = description;
     }
 
+    public _Side(String id, String nameSide) {
+        this.id = id;
+        this.nameSide = nameSide;
+    }
+
     public _Side() {
     }
 
@@ -72,5 +77,10 @@ public class _Side {
     @Override
     public int hashCode() {
         return Objects.hash(id, nameSide, latitude, longitude, description);
+    }
+
+    @Override
+    public String toString() {
+        return nameSide;
     }
 }

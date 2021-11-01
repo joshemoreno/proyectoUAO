@@ -32,7 +32,9 @@
     <string name="nameRestaurant">Name of place</string>
     <string name="comboTitle">Combo name</string>
     <string name="comboDescription">Combo description</string>
+    <string name="btnImageProduct">Upload</string>
     <string name="amount">Amount</string>
+    <string name="price">Price</string>
     <string name="startDate">Start date</string>
     <string name="startTime">Start time</string>
     <string name="endDate">End date</string>
@@ -49,6 +51,11 @@
     <!--message-->
     <string name="msg_nameUser">Please enter a name</string>
     <string name="msg_lastNameUser">Please enter a last name</string>
+    <string name="msg_comboName">Please enter a combo name</string>
+    <string name="msg_comboDesc">Please enter a combo description</string>
+    <string name="msg_amount">Please enter a amount of product</string>
+    <string name="msg_amount2">The amount cannot be less than 0</string>
+    <string name="msg_namePlace">Please select a place</string>
     <string name="msg_facultyUser">Please enter a faculty</string>
     <string name="msg_programUser">Please enter a program</string>
     <string name="msg_emailUser">Please enter a email</string>
@@ -58,10 +65,17 @@
     <string name="msg_selectStatus">Please select a status</string>
     <string name="msg_successUser">The user was created</string>
     <string name="msg_successUser2">The user was edited</string>
-    <string name="msg_successSide">The side was create</string>
+    <string name="msg_successSide">The side was created</string>
     <string name="msg_successSide2">The side was edited</string>
+    <string name="msg_successOffer">The offer was created</string>
+    <string name="msg_successOffer2">The offer was edited</string>
     <string name="msg_disabled">The user account has been disabled by an administrator</string>
     <string name="msg_info">Success</string>
+    <string name="msg_startDate">Please enter a start date</string>
+    <string name="msg_endDate">Please enter a end date</string>
+    <string name="msg_startTime">Please enter a start time</string>
+    <string name="msg_endTime">Please enter a end time</string>
+    <string name="msg_imageProduct">Please enter a image</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -4,26 +4,30 @@ import java.util.Objects;
 
 public class _Offer {
     private String id;
-    private String nameRestaurant;
+    private String selectSide;
     private String comboTitle;
     private String comboDescription;
-    private String count;
+    private String amount;
     private String startDate;
     private String endDate;
     private String status;
+    private String url;
+    private String price;
 
-    public _Offer(String id, String nameRestaurant, String comboTitle, String comboDescription, String count, String startDate, String endDate, String status) {
+    public _Offer() {
+    }
+
+    public _Offer(String id, String selectSide, String comboTitle, String comboDescription, String amount, String startDate, String endDate, String status, String url, String price) {
         this.id = id;
-        this.nameRestaurant = nameRestaurant;
+        this.selectSide = selectSide;
         this.comboTitle = comboTitle;
         this.comboDescription = comboDescription;
-        this.count = count;
+        this.amount = amount;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
-    }
-
-    public _Offer() {
+        this.url = url;
+        this.price = price;
     }
 
     public String getId() {
@@ -34,12 +38,12 @@ public class _Offer {
         this.id = id;
     }
 
-    public String getNameRestaurant() {
-        return nameRestaurant;
+    public String getSelectSide() {
+        return selectSide;
     }
 
-    public void setNameRestaurant(String nameRestaurant) {
-        this.nameRestaurant = nameRestaurant;
+    public void setSelectSide(String selectSide) {
+        this.selectSide = selectSide;
     }
 
     public String getComboTitle() {
@@ -58,12 +62,12 @@ public class _Offer {
         this.comboDescription = comboDescription;
     }
 
-    public String getCount() {
-        return count;
+    public String getAmount() {
+        return amount;
     }
 
-    public void setCount(String count) {
-        this.count = count;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public String getStartDate() {
@@ -90,16 +94,19 @@ public class _Offer {
         this.status = status;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        _Offer offer = (_Offer) o;
-        return Objects.equals(id, offer.id) && Objects.equals(nameRestaurant, offer.nameRestaurant) && Objects.equals(comboTitle, offer.comboTitle) && Objects.equals(comboDescription, offer.comboDescription) && Objects.equals(count, offer.count) && Objects.equals(startDate, offer.startDate) && Objects.equals(endDate, offer.endDate) && Objects.equals(status, offer.status);
+    public String getUrl() {
+        return url;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nameRestaurant, comboTitle, comboDescription, count, startDate, endDate, status);
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }
