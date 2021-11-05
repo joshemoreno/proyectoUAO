@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".SideFragment">
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/msg_emptySide"
+        android:gravity="center"
+        android:textSize="30dp">
+    </TextView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

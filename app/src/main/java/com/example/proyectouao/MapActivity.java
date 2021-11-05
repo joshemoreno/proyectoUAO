@@ -19,7 +19,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerView;
@@ -56,11 +58,13 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
         mAuth = FirebaseAuth.getInstance();
 
+
         mapView = findViewById(R.id.mapView);
         btnSave = findViewById(R.id.btnSaveSide);
         Intent intent = getIntent();
         String lat = intent.getStringExtra("latitude");
         String lon = intent.getStringExtra("longitude");
+        String selectSide = intent.getStringExtra("selectSide");
         if(lat!=null||lon!=null){
             latitudeG = Double.parseDouble(lat);
             longitudeG = Double.parseDouble(lon);
@@ -72,179 +76,215 @@ public class MapActivity extends AppCompatActivity {
             longitudeG = 0.0;
         }
 
-        if(latitudeG!=0.0||longitudeG!=0.0){
-            mapView.onCreate(savedInstanceState);
-            mapView.getMapAsync(new OnMapReadyCallback() {
+        if (selectSide!=null){
+            db.collection("sides").document(selectSide).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
-                public void onMapReady(MapboxMap mapboxMap) {
-                    btnSave.setImageResource(R.drawable.editar);
-                    CameraPosition position = new CameraPosition.Builder()
-                            .target(new LatLng(3.353802, -76.520742))
-                            .zoom(12)
-                            .tilt(60)
-                            .build();
-                    mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000);
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if(documentSnapshot.exists()){
+                        btnSave.setVisibility(View.INVISIBLE);
+                        Double localLat = Double.parseDouble((String) documentSnapshot.getData().get("latitude"));
+                        Double localLong = Double.parseDouble((String) documentSnapshot.getData().get("longitude"));
+                        String nameSide = (String) documentSnapshot.getData().get("nameSide");
+                        String description = (String) documentSnapshot.getData().get("description");
+                        mapView.onCreate(savedInstanceState);
+                        mapView.getMapAsync(new OnMapReadyCallback() {
 
-                    Marker marker = mapboxMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(latitudeG, longitudeG))
-                            .title(nameSideG)
-                            .snippet(descriptionG)
-                    );
+                            @Override
+                            public void onMapReady(MapboxMap mapboxMap) {
+                                CameraPosition position = new CameraPosition.Builder()
+                                        .target(new LatLng(3.353802, -76.520742))
+                                        .zoom(12)
+                                        .tilt(60)
+                                        .build();
+                                mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000);
 
-                    btnSave.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            btnSave.setImageResource(R.drawable.save);
+                                mapboxMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(localLat, localLong))
+                                        .title(nameSide)
+                                        .snippet(description)
+                                );
+                            }
+                        });
+                    }
+                }
+            });
+        }else {
+            if(latitudeG!=0.0||longitudeG!=0.0){
+                mapView.onCreate(savedInstanceState);
+                mapView.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(MapboxMap mapboxMap) {
+                        btnSave.setImageResource(R.drawable.editar);
+                        CameraPosition position = new CameraPosition.Builder()
+                                .target(new LatLng(3.353802, -76.520742))
+                                .zoom(12)
+                                .tilt(60)
+                                .build();
+                        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000);
 
-                            mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
-                                Marker markerView;
-                                @Override
-                                public void onMapClick(@NonNull LatLng point) {
+                        Marker marker = mapboxMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(latitudeG, longitudeG))
+                                .title(nameSideG)
+                                .snippet(descriptionG)
+                        );
 
-                                    Double latitude = point.getLatitude();
-                                    Double longitude = point.getLongitude();
+                        btnSave.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                btnSave.setImageResource(R.drawable.save);
 
-                                    if(latitude!=latitudeG || longitude!=longitudeG){
-                                        mapboxMap.removeMarker(marker);
-                                    }
+                                mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
+                                    Marker markerView;
+                                    @Override
+                                    public void onMapClick(@NonNull LatLng point) {
 
-                                    MarkerOptions newMarker = new MarkerOptions()
-                                            .position(new LatLng(latitude,longitude));
+                                        Double latitude = point.getLatitude();
+                                        Double longitude = point.getLongitude();
+
+                                        if(latitude!=latitudeG || longitude!=longitudeG){
+                                            mapboxMap.removeMarker(marker);
+                                        }
+
+                                        MarkerOptions newMarker = new MarkerOptions()
+                                                .position(new LatLng(latitude,longitude));
 //                                    if(markerView!=null){
 //                                        mapboxMap.removeMarker(markerView);
 //                                    }
-                                    markerView = mapboxMap.addMarker(newMarker);
-                                    btnSave.setVisibility(View.VISIBLE);
+                                        markerView = mapboxMap.addMarker(newMarker);
+                                        btnSave.setVisibility(View.VISIBLE);
 
-                                    btnSave.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-                                            View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-                                            Button btn_send = mView.findViewById(R.id.btn_okay);
-                                            EditText et_name = mView.findViewById(R.id.et_name);
-                                            EditText et_description = mView.findViewById(R.id.et_description);
-                                            TextView tv_title = mView.findViewById(R.id.titleModal);
-                                            tv_title.setText("Edit side");
-                                            et_name.setText(nameSideG);
-                                            et_description.setText(descriptionG);
-                                            builder.setView(mView);
-                                            AlertDialog alertDialog = builder.create();
-                                            alertDialog.show();
-                                            btn_send.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    String nameSide = et_name.getText().toString();
-                                                    String description = et_description.getText().toString();
+                                        btnSave.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+                                                View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+                                                Button btn_send = mView.findViewById(R.id.btn_okay);
+                                                EditText et_name = mView.findViewById(R.id.et_name);
+                                                EditText et_description = mView.findViewById(R.id.et_description);
+                                                TextView tv_title = mView.findViewById(R.id.titleModal);
+                                                tv_title.setText("Edit side");
+                                                et_name.setText(nameSideG);
+                                                et_description.setText(descriptionG);
+                                                builder.setView(mView);
+                                                AlertDialog alertDialog = builder.create();
+                                                alertDialog.show();
+                                                btn_send.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        String nameSide = et_name.getText().toString();
+                                                        String description = et_description.getText().toString();
 
-                                                    currentUser = mAuth.getCurrentUser().getEmail();
-                                                    loadinDialog.startLoading();
-                                                    createNewSide(idG, currentUser, nameSide, description, String.valueOf(latitude), String.valueOf(longitude));
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                            btnSave.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-                                    View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-                                    Button btn_send = mView.findViewById(R.id.btn_okay);
-                                    EditText et_name = mView.findViewById(R.id.et_name);
-                                    EditText et_description = mView.findViewById(R.id.et_description);
-                                    TextView tv_title = mView.findViewById(R.id.titleModal);
-                                    tv_title.setText("Edit side");
-                                    et_name.setText(nameSideG);
-                                    et_description.setText(descriptionG);
-                                    builder.setView(mView);
-                                    AlertDialog alertDialog = builder.create();
-                                    alertDialog.show();
-                                    btn_send.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            String nameSide = et_name.getText().toString();
-                                            String description = et_description.getText().toString();
+                                                        currentUser = mAuth.getCurrentUser().getEmail();
+                                                        loadinDialog.startLoading();
+                                                        createNewSide(idG, currentUser, nameSide, description, String.valueOf(latitude), String.valueOf(longitude));
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                                btnSave.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+                                        View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+                                        Button btn_send = mView.findViewById(R.id.btn_okay);
+                                        EditText et_name = mView.findViewById(R.id.et_name);
+                                        EditText et_description = mView.findViewById(R.id.et_description);
+                                        TextView tv_title = mView.findViewById(R.id.titleModal);
+                                        tv_title.setText("Edit side");
+                                        et_name.setText(nameSideG);
+                                        et_description.setText(descriptionG);
+                                        builder.setView(mView);
+                                        AlertDialog alertDialog = builder.create();
+                                        alertDialog.show();
+                                        btn_send.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                String nameSide = et_name.getText().toString();
+                                                String description = et_description.getText().toString();
 
-                                            currentUser = mAuth.getCurrentUser().getEmail();
-                                            loadinDialog.startLoading();
-                                            createNewSide(idG, currentUser, nameSide, description, String.valueOf(latitudeG), String.valueOf(longitudeG));
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }else{
-            mapView.onCreate(savedInstanceState);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.titleMap);
-            builder.setIcon(R.drawable.info);
-            builder.setPositiveButton(R.string.btn_ok,null);
-            builder.setMessage(R.string.msg_starting);
-            androidx.appcompat.app.AlertDialog dialog = builder.create();
-            dialog.show();
-
-            mapView.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(@NonNull MapboxMap mapboxMap) {
-                    btnSave.setVisibility(View.INVISIBLE);
-                    CameraPosition position = new CameraPosition.Builder()
-                            .target(new LatLng(3.353802, -76.520742))
-                            .zoom(12)
-                            .tilt(60)
-                            .build();
-                    mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000);
-
-                    mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
-                        Marker markerView;
-                        @Override
-                        public void onMapClick(@NonNull LatLng point) {
-
-                            Double latitude = point.getLatitude();
-                            Double longitude = point.getLongitude();
-
-                            MarkerOptions newMarker = new MarkerOptions()
-                                    .position(new LatLng(latitude,longitude));
-                            if(markerView!=null){
-                                mapboxMap.removeMarker(markerView);
+                                                currentUser = mAuth.getCurrentUser().getEmail();
+                                                loadinDialog.startLoading();
+                                                createNewSide(idG, currentUser, nameSide, description, String.valueOf(latitudeG), String.valueOf(longitudeG));
+                                            }
+                                        });
+                                    }
+                                });
                             }
-                            markerView = mapboxMap.addMarker(newMarker);
-                            btnSave.setVisibility(View.VISIBLE);
+                        });
+                    }
+                });
+            }else{
+                mapView.onCreate(savedInstanceState);
 
-                            btnSave.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
-                                    View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-                                    Button btn_send = mView.findViewById(R.id.btn_okay);
-                                    EditText et_name = mView.findViewById(R.id.et_name);
-                                    EditText et_description = mView.findViewById(R.id.et_description);
-                                    builder.setView(mView);
-                                    final AlertDialog alertDialog = builder.create();
-                                    btn_send.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            String nameSide = et_name.getText().toString();
-                                            String description = et_description.getText().toString();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.titleMap);
+                builder.setIcon(R.drawable.info);
+                builder.setPositiveButton(R.string.btn_ok,null);
+                builder.setMessage(R.string.msg_starting);
+                androidx.appcompat.app.AlertDialog dialog = builder.create();
+                dialog.show();
 
-                                            currentUser = mAuth.getCurrentUser().getEmail();
-                                            loadinDialog.startLoading();
-                                            createNewSide(null, currentUser, nameSide, description, String.valueOf(latitude), String.valueOf(longitude));
-                                        }
-                                    });
-                                    alertDialog.show();
+                mapView.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                        btnSave.setVisibility(View.INVISIBLE);
+                        CameraPosition position = new CameraPosition.Builder()
+                                .target(new LatLng(3.353802, -76.520742))
+                                .zoom(12)
+                                .tilt(60)
+                                .build();
+                        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000);
+
+                        mapboxMap.addOnMapClickListener(new MapboxMap.OnMapClickListener() {
+                            Marker markerView;
+                            @Override
+                            public void onMapClick(@NonNull LatLng point) {
+
+                                Double latitude = point.getLatitude();
+                                Double longitude = point.getLongitude();
+
+                                MarkerOptions newMarker = new MarkerOptions()
+                                        .position(new LatLng(latitude,longitude));
+                                if(markerView!=null){
+                                    mapboxMap.removeMarker(markerView);
                                 }
-                            });
-                        }
-                    });
-                }
-            });
+                                markerView = mapboxMap.addMarker(newMarker);
+                                btnSave.setVisibility(View.VISIBLE);
+
+                                btnSave.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+                                        View mView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+                                        Button btn_send = mView.findViewById(R.id.btn_okay);
+                                        EditText et_name = mView.findViewById(R.id.et_name);
+                                        EditText et_description = mView.findViewById(R.id.et_description);
+                                        builder.setView(mView);
+                                        final AlertDialog alertDialog = builder.create();
+                                        btn_send.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                String nameSide = et_name.getText().toString();
+                                                String description = et_description.getText().toString();
+
+                                                currentUser = mAuth.getCurrentUser().getEmail();
+                                                loadinDialog.startLoading();
+                                                createNewSide(null, currentUser, nameSide, description, String.valueOf(latitude), String.valueOf(longitude));
+                                            }
+                                        });
+                                        alertDialog.show();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
         }
+
+
     }
 
     public void createNewSide(String id, String currentUser, String name, String description, String latitude, String longitude){

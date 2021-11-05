@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.proyectouao.adapter.HomeAdapter;
 import com.example.proyectouao.model._Offer;
@@ -25,6 +26,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class HomeFragment extends Fragment {
 
@@ -33,6 +36,7 @@ public class HomeFragment extends Fragment {
     private FloatingActionButton btnAdd;
     private FirebaseFirestore db;
     private HomeAdapter homeAdapter;
+    private TextView tv_empty;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +45,7 @@ public class HomeFragment extends Fragment {
         View root =  inflater.inflate(R.layout.fragment_home, container, false);
 
         rv_list = root.findViewById(R.id.rv_list);
+        tv_empty = root.findViewById(R.id.tv_empty);
         rv_list.setLayoutManager(new LinearLayoutManager(getActivity()));
         db = FirebaseFirestore.getInstance();
         CollectionReference reference = db.collection("offers");
@@ -55,9 +60,16 @@ public class HomeFragment extends Fragment {
                     String id = document.getId();
                     Integer status = Integer.parseInt(temp.getStatus());
                     Integer count = Integer.parseInt(temp.getAmount());
+                    Date startDate = new Date(temp.getStartDate());
+                    Date endDate = new Date(temp.getEndDate());
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.HOUR, cal.get(Calendar.HOUR)- 5);
+                    Date currentDate = cal.getTime();
                     if(status!=0){
                         if(count!=0){
-                            list.add(temp);
+                            if(currentDate.after(startDate)&&currentDate.before(endDate)){
+                                list.add(temp);
+                            }
                         }else{
                             updateOffer(temp,id);
                         }
@@ -67,11 +79,13 @@ public class HomeFragment extends Fragment {
         }).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(list.size()==0){
+                    tv_empty.setVisibility(View.VISIBLE);
+                }
                 homeAdapter = new HomeAdapter(list,getActivity());
                 homeAdapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.i("key","salip");
                         Intent act_goDetail = new Intent(getActivity(), OfferDetail.class);
                         act_goDetail.putExtra("name",list.get(rv_list.getChildAdapterPosition(view)).getComboTitle());
                         act_goDetail.putExtra("description",list.get(rv_list.getChildAdapterPosition(view)).getComboDescription());
@@ -81,6 +95,7 @@ public class HomeFragment extends Fragment {
                         act_goDetail.putExtra("endDate",list.get(rv_list.getChildAdapterPosition(view)).getEndDate());
                         act_goDetail.putExtra("url",list.get(rv_list.getChildAdapterPosition(view)).getUrl());
                         act_goDetail.putExtra("id",list.get(rv_list.getChildAdapterPosition(view)).getId());
+                        act_goDetail.putExtra("selectSide",list.get(rv_list.getChildAdapterPosition(view)).getSelectSide());
                         startActivity(act_goDetail);
                     }
                 });

@@ -60,18 +60,22 @@ public class OfferFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 offerAdapter = new OfferAdapter(list,getActivity());
-//                offerAdapter.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Intent act_goDetail = new Intent(getActivity(), MapActivity.class);
-//                        act_goDetail.putExtra("latitude",list.get(rv_list.getChildAdapterPosition(view)).getLatitude());
-//                        act_goDetail.putExtra("longitude",list.get(rv_list.getChildAdapterPosition(view)).getLongitude());
-//                        act_goDetail.putExtra("nameSide",list.get(rv_list.getChildAdapterPosition(view)).getNameSide());
-//                        act_goDetail.putExtra("description",list.get(rv_list.getChildAdapterPosition(view)).getDescription());
-//                        act_goDetail.putExtra("id",list.get(rv_list.getChildAdapterPosition(view)).getId());
-//                        startActivity(act_goDetail);
-//                    }
-//                });
+                offerAdapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent act_goDetail = new Intent(getActivity(), EditOffer.class);
+                        act_goDetail.putExtra("name",list.get(rv_list.getChildAdapterPosition(view)).getComboTitle());
+                        act_goDetail.putExtra("description",list.get(rv_list.getChildAdapterPosition(view)).getComboDescription());
+                        act_goDetail.putExtra("amount",list.get(rv_list.getChildAdapterPosition(view)).getAmount());
+                        act_goDetail.putExtra("price",list.get(rv_list.getChildAdapterPosition(view)).getPrice());
+                        act_goDetail.putExtra("startDate",list.get(rv_list.getChildAdapterPosition(view)).getStartDate());
+                        act_goDetail.putExtra("endDate",list.get(rv_list.getChildAdapterPosition(view)).getEndDate());
+                        act_goDetail.putExtra("url",list.get(rv_list.getChildAdapterPosition(view)).getUrl());
+                        act_goDetail.putExtra("id",list.get(rv_list.getChildAdapterPosition(view)).getId());
+                        act_goDetail.putExtra("selectSide",list.get(rv_list.getChildAdapterPosition(view)).getSelectSide());
+                        startActivity(act_goDetail);
+                    }
+                });
                 rv_list.setAdapter(offerAdapter);
             }
         });
