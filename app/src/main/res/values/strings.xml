@@ -81,6 +81,10 @@
     <string name="txt_unites">units</string>
     <string name="msg_emptyOffer">No offers for now</string>
     <string name="msg_emptySide">No offers for now</string>
+    <string name="msg_addProduct">The product was added to cart</string>
+    <string name="product_empty">You don\'t have any added products yet</string>
+    <string name="btn_buy">Buy</string>
+    <string name="msg_shopping">Thanks for your purchase</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

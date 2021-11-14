@@ -66,6 +66,10 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                         item_user.setVisible(false);
                         MenuItem item_offer = navigationView.getMenu().findItem(R.id.nav_offer);
                         item_offer.setVisible(false);
+                        MenuItem item_list = navigationView.getMenu().findItem(R.id.nav_shoppingList);
+                        item_list.setVisible(false);
+                        MenuItem item_shopping = navigationView.getMenu().findItem(R.id.nav_shopping);
+                        item_shopping.setVisible(true);
                     }
                 }
             }
@@ -117,6 +121,12 @@ public class DashBoard extends AppCompatActivity implements NavigationView.OnNav
                 break;
             case R.id.nav_offer:
                 ft.replace(R.id.content, new OfferFragment()).commit();
+                break;
+            case R.id.nav_shopping:
+                ft.replace(R.id.content, new ShoppingFragment()).commit();
+                break;
+            case R.id.nav_shoppingList:
+                ft.replace(R.id.content, new ListFragment()).commit();
                 break;
             case R.id.nav_logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(mySelf);

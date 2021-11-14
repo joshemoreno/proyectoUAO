@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment {
                     if(status!=0){
                         if(count!=0){
                             if(currentDate.after(startDate)&&currentDate.before(endDate)){
+                                temp.setId(id);
                                 list.add(temp);
                             }
                         }else{
@@ -96,6 +97,7 @@ public class HomeFragment extends Fragment {
                         act_goDetail.putExtra("url",list.get(rv_list.getChildAdapterPosition(view)).getUrl());
                         act_goDetail.putExtra("id",list.get(rv_list.getChildAdapterPosition(view)).getId());
                         act_goDetail.putExtra("selectSide",list.get(rv_list.getChildAdapterPosition(view)).getSelectSide());
+                        act_goDetail.putExtra("status",list.get(rv_list.getChildAdapterPosition(view)).getStatus());
                         startActivity(act_goDetail);
                     }
                 });

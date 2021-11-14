@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="40"
-        android:layout_marginHorizontal="@dimen/txt_subtitle">
+        >
 
         <ImageView
             android:id="@+id/imageDetail"
@@ -145,8 +145,19 @@
                         android:clickable="true"
                         android:id="@+id/tv_location"/>
 
+                    <ImageView
+                        android:id="@+id/addCart"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:clickable="true"
+                        android:src="@drawable/add_shopping_cart"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginRight="20dp">
+                    </ImageView>
+
                 </LinearLayout>
             </ScrollView>
+
 
         </androidx.cardview.widget.CardView>
 

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:text="@string/msg_emptyOffer"
         android:gravity="center"
-        android:textSize="30dp">
+        android:textSize="@dimen/txt_paragraph">
     </TextView>
 
     <androidx.recyclerview.widget.RecyclerView

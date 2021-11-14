@@ -2,6 +2,7 @@ package com.example.proyectouao;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -9,6 +10,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,17 +32,24 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EditOffer extends AppCompatActivity {
 
@@ -123,8 +132,6 @@ public class EditOffer extends AppCompatActivity {
                     optionsSides.add(new _Side(list.get(i).getId(),list.get(i).getNameSide()));
                      String localId = list.get(i).getId();
                      if(localId.equals(selectSide)){
-                     Log.i("key",""+selectSide);
-                     Log.i("key",""+localId);
                         setSpinner = i+1;
                     }
                 }
@@ -251,18 +258,148 @@ public class EditOffer extends AppCompatActivity {
                 String endTime = et_endTime.getText().toString().trim();
                 selectSide = Integer.parseInt(String.valueOf(spinnerSide.getSelectedItemId()));
                 String price = et_price.getText().toString().trim();
-//                Boolean response = validator(comboName,comboDesc,amount,startDate,endDate,startTime,endTime,price,selectSide);
+                Boolean response = validator(comboName,comboDesc,amount,startDate,endDate,startTime,endTime,price,selectSide);
 
-//                if (response){
+                if (response){
                     Integer find = (selectSide-1);
                     _Side select = list.get(find);
                     loadinDialog.startLoading();
                     currentUser = mAuth.getCurrentUser().getEmail();
-//                    createOffer(currentUser,comboName,comboDesc,amount,startDate,endDate,startTime,endTime,price,select.getId());
-//                }
+                    editOffer(currentUser,comboName,comboDesc,amount,startDate,endDate,startTime,endTime,price,select.getId(),url,id);
+                }
             }
         });
 
+    }
+
+    private Boolean validator(String comboName, String comboDesc, String amount, String startDate, String endDate, String startTime,String endTime, String price, Integer selectSide) {
+        Boolean response = true;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.warning);
+        builder.setIcon(R.drawable.warning);
+        builder.setPositiveButton(R.string.btn_ok,null);
+
+        if(selectSide==0){
+            builder.setMessage(R.string.msg_namePlace);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if(comboName.isEmpty()){
+            builder.setMessage(R.string.msg_comboName);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if(comboDesc.isEmpty()){
+            builder.setMessage(R.string.msg_comboDesc);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if(amount.isEmpty()){
+            builder.setMessage(R.string.msg_amount);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if(Integer.parseInt(amount)<=0){
+            builder.setMessage(R.string.msg_amount2);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if(startDate.isEmpty()){
+            builder.setMessage(R.string.msg_startDate);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if(endDate.isEmpty()){
+            builder.setMessage(R.string.msg_endDate);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if(startTime.isEmpty()){
+            builder.setMessage(R.string.msg_startTime);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if(endTime.isEmpty()){
+            builder.setMessage(R.string.msg_endTime);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if(price.isEmpty()){
+            builder.setMessage(R.string.msg_endTime);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            response = false;
+        }else if (globalPath == null) {
+            builder.setMessage(R.string.msg_imageProduct);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        return response;
+    }
+
+    private void editOffer(String currentUser, String comboName, String comboDesc, String amount, String startDate, String endDate, String startTime, String endTime, String price, String selectSide,String url,String id) {
+        String S_time[] =  startTime.split(" ");
+        String E_time[] =  endTime.split(" ");
+
+
+        String start_date_time = startDate + " " + S_time[0];
+        String end_date_time = endDate+" "+E_time[0];
+
+
+        SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            try {
+                Date start_Date = dateParser.parse(start_date_time);
+                Date end_Date = dateParser.parse(end_date_time);
+
+
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR, cal.get(Calendar.HOUR)- 5);
+                Date currentDate = cal.getTime();
+
+                String status = "0";
+
+                if(currentDate.after(start_Date)&&currentDate.before(end_Date)){
+                    status = "1";
+                }
+
+                Map<String, Object> offer = new HashMap<>();
+                offer.put("comboTitle", comboName);
+                offer.put("comboDescription", comboDesc);
+                offer.put("amount", amount);
+                offer.put("startDate", start_Date.toString());
+                offer.put("endDate", end_Date.toString());
+                offer.put("status", status);
+                offer.put("selectSide", selectSide);
+                offer.put("price", price);
+
+                db.collection("offers")
+                        .document(id)
+                        .update(offer)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(EditOffer.this);
+                                builder.setTitle(R.string.msg_info);
+                                builder.setMessage(R.string.msg_successOffer2);
+                                builder.setIcon(R.drawable.info);
+                                builder.setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent act_goUser = new Intent(EditOffer.this, DashBoard.class);
+                                        act_goUser.putExtra("email",currentUser);
+                                        startActivity(act_goUser);
+                                        finish();
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+                        });
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
     }
 
     public void showStartDatePicker(View view) {
