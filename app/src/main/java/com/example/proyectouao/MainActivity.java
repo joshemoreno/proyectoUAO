@@ -12,10 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private Button logIn;
     private Activity mySelf;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     LoadinDialog loadinDialog = new LoadinDialog(MainActivity.this);
 
     //variables
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         mySelf = this;
         et_email = findViewById(R.id.eTemail);
         et_password = findViewById(R.id.eTpassword);
@@ -42,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+            String email = user.getEmail();
             Intent act_goHome = new Intent(mySelf,DashBoard.class);
             act_goHome.putExtra("email",email);
             startActivity(act_goHome);
@@ -94,11 +100,32 @@ public class MainActivity extends AppCompatActivity {
                         builder.setPositiveButton(R.string.btn_ok,null);
 
                         if (task.isSuccessful()) {
-                            loadinDialog.dismissDialog();
-                            finish();
-                            Intent act_goHome = new Intent(mySelf,DashBoard.class);
-                            act_goHome.putExtra("email",email);
-                            startActivity(act_goHome);
+                            db.collection("users").document(email).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists()){
+                                        String status = (String) documentSnapshot.getData().get("userStatus");
+                                        if(Integer.parseInt(status)==1){
+                                            loadinDialog.dismissDialog();
+                                            finish();
+                                            Intent act_goHome = new Intent(mySelf,DashBoard.class);
+                                            act_goHome.putExtra("email",email);
+                                            startActivity(act_goHome);
+                                        }else{
+                                            loadinDialog.dismissDialog();
+                                            builder.setMessage(R.string.msg_disabled);
+                                            AlertDialog dialog = builder.create();
+                                            dialog.show();
+                                            FirebaseAuth.getInstance().signOut();
+                                            et_email = findViewById(R.id.eTemail);
+                                            et_password = findViewById(R.id.eTpassword);
+                                            et_email.setText("");
+                                            et_password.setText("");
+                                        }
+                                    }
+                                }
+                            });
+
                         } else if(!task.isSuccessful()){
                             loadinDialog.dismissDialog();
                             String errorCode = task.getException().getMessage();

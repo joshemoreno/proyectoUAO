@@ -22,6 +22,14 @@
             android:icon="@drawable/offer"
             android:title="@string/menu_offer" />
         <item
+            android:id="@+id/nav_shopping"
+            android:icon="@drawable/shopping"
+            android:title="Shopping cart" />
+        <item
+            android:id="@+id/nav_shoppingList"
+            android:icon="@drawable/ticket"
+            android:title="Shopping list" />
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="Logout" />

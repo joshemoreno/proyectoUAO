@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.proyectouao">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,6 +19,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoUAO"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".OfferDetail"
+            android:exported="true" />
+        <activity
+            android:name=".EditOffer"
+            android:exported="true" />
+        <activity
+            android:name=".AddOffer"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".MapActivity"
+            android:exported="true">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".EditUser"
+            android:exported="true" />
+        <activity
+            android:name=".AddUser"
+            android:exported="true" />
         <activity
             android:name=".DashBoard"
             android:exported="true" />

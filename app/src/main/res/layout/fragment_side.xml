@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".SideFragment">
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/msg_emptySide"
+        android:gravity="center"
+        android:textSize="30dp">
+    </TextView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +23,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAddProduct"
+        android:id="@+id/btnAddSide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
